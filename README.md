@@ -27,6 +27,7 @@ We make example training scripts and pre-trained models available below. In orde
 | MonoBERT                            | `run_monoBERT_retrieval.sh`      | [Baseline (594M)](https://madata.bib.uni-mannheim.de/391/2/monobert.tar.gz)                                                                                 |
 | Language Masks (LM) / Adapters (LA) | `run_{sft,adapter}_mlm.sh`       | [LM (4.5G)](https://madata.bib.uni-mannheim.de/391/6/language_masks.tar.gz), [LA (1.6G)](https://madata.bib.uni-mannheim.de/391/4/language_adapters.tar.gz) |
 | Ranking Masks (RM) / Adapters (RA)  | `run_{sft,adapter}_retrieval.sh` | [RM (3.6G)](https://madata.bib.uni-mannheim.de/391/5/ranking_masks.tar.gz), [RA (256M)](https://madata.bib.uni-mannheim.de/391/3/ranking_adapters.tar.gz)   |
+
 *Note: You can use `scripts/download.sh` to download and setup all resources at once.*
 
 ## Evaluation
