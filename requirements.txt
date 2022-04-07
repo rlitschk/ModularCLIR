@@ -1,0 +1,8 @@
+lxml 
+pyserini==0.15.0 
+faiss-cpu==1.7.0 
+adapter-transformers==2.3.0  
+easynmt==2.0.1 
+sentence-transformers==2.1.0 
+torch==1.10.0
+datasets==1.16.1
