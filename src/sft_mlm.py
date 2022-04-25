@@ -25,7 +25,7 @@ import os
 import sys
 from dataclasses import dataclass, field
 from typing import Optional
-
+from pathlib import Path
 import datasets
 from datasets import load_dataset
 import torch
@@ -283,7 +283,7 @@ def main():
         "sw" in data_args.dataset_config_name or \
         "so" in data_args.dataset_config_name:
       lang = data_args.dataset_config_name.split(".")[1]
-      cache_dir = f"/work-ceph/rlitschk/.cache/huggingface_wikipedia/{lang}/"
+      cache_dir = str(Path.home() / '.cache' / 'huggingface_wikipedia' / lang)
       logger.info(f"Loading local dataset (beam_runner='DirectRunner', date='20220120'), cache_dir {cache_dir}")
       raw_datasets = load_dataset(
         'wikipedia',

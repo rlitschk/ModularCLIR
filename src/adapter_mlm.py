@@ -29,6 +29,7 @@ import logging
 import math
 import os
 import sys
+from pathlib import Path
 from dataclasses import dataclass, field
 from typing import Optional
 import multiprocessing
@@ -286,7 +287,8 @@ def main():
             "fi" in data_args.dataset_config_name or \
             "sw" in data_args.dataset_config_name or \
             "so" in data_args.dataset_config_name:
-            cache_dir = f"/work-ceph/rlitschk/.cache/huggingface_wikipedia/{lang}/"
+            cache_dir = str(Path.home() / '.cache' / 'huggingface_wikipedia' / lang)
+            os.makedirs(cache_dir, exist_ok=True)
             logger.info(f"Loading local dataset (beam_runner='DirectRunner', date='20220120'), cache_dir {cache_dir}")
             raw_datasets = load_dataset(
                 'wikipedia',
