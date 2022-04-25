@@ -6,3 +6,5 @@ easynmt==2.0.1
 sentence-transformers==2.1.0 
 torch==1.10.0
 datasets==1.16.1
+apache_beam==2.35.0
+mwparserfromhell==0.6.3
