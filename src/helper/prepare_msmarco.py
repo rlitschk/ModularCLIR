@@ -38,7 +38,26 @@ def get_corpus(cache_dir: str) -> dict:
       util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collection.tar.gz', tar_filepath)
 
     with tarfile.open(tar_filepath, "r:gz") as tar:
-      tar.extractall(path=cache_dir)
+      def is_within_directory(directory, target):
+          
+          abs_directory = os.path.abspath(directory)
+          abs_target = os.path.abspath(target)
+      
+          prefix = os.path.commonprefix([abs_directory, abs_target])
+          
+          return prefix == abs_directory
+      
+      def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+      
+          for member in tar.getmembers():
+              member_path = os.path.join(path, member.name)
+              if not is_within_directory(path, member_path):
+                  raise Exception("Attempted Path Traversal in Tar File")
+      
+          tar.extractall(path, members, numeric_owner) 
+          
+      
+      safe_extract(tar, path=cache_dir)
   with open(collection_filepath, 'r', encoding='utf8') as fIn:
     for line in fIn:
       pid, passage = line.strip().split("\t")
@@ -60,7 +79,26 @@ def get_queries(cache_dir: str) -> dict:
         util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/queries.tar.gz', tar_filepath)
 
       with tarfile.open(tar_filepath, "r:gz") as tar:
-        tar.extractall(path=cache_dir)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner) 
+            
+        
+        safe_extract(tar, path=cache_dir)
     with open(queries_filepath, 'r', encoding='utf8') as fIn:
       for line in fIn:
         qid, query = line.strip().split("\t")
@@ -106,7 +144,26 @@ def get_dev_samples(
         logging.info("Download " + os.path.basename(container_filepath))
         util.http_get('https://msmarco.blob.core.windows.net/msmarcoranking/collectionandqueries.tar.gz', container_filepath)
       with tarfile.open(container_filepath, "r:gz") as tar:
-        tar.extractall(path=cache_dir)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner) 
+            
+        
+        safe_extract(tar, path=cache_dir)
 
     # Process labels file
     qid2relevant_pids = defaultdict(list)
@@ -126,7 +183,26 @@ def get_dev_samples(
         logging.info("Download " + os.path.basename(train_eval_filepath))
         util.http_get(download_url, train_eval_filepath)
       with tarfile.open(train_eval_filepath, "r:gz") as tar:
-        tar.extractall(path=cache_dir)
+        def is_within_directory(directory, target):
+            
+            abs_directory = os.path.abspath(directory)
+            abs_target = os.path.abspath(target)
+        
+            prefix = os.path.commonprefix([abs_directory, abs_target])
+            
+            return prefix == abs_directory
+        
+        def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+        
+            for member in tar.getmembers():
+                member_path = os.path.join(path, member.name)
+                if not is_within_directory(path, member_path):
+                    raise Exception("Attempted Path Traversal in Tar File")
+        
+            tar.extractall(path, members, numeric_owner) 
+            
+        
+        safe_extract(tar, path=cache_dir)
 
     dev_lines = []
     dev_samples = {}
