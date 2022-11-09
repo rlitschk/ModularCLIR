@@ -1,6 +1,8 @@
 # Parameter-Efficient Neural Reranking for Cross-Lingual and Multilingual Retrieval
 Robert Litschko, Ivan Vulić, Goran Glavaš. [Parameter-Efficient Neural Reranking for Cross-Lingual and Multilingual Retrieval](https://arxiv.org/abs/2204.02292). This work builds on top of Adapters (cf. *MAD-X: An Adapter-Based Framework for Multi-Task Cross-Lingual Transfer* Pfeiffer et al. 2020) and Sparse Fine-Tuning Masks (*Composable Sparse Fine-Tuning for Cross Lingual Transfer*, Ansell et al. 2021). Adapters and Masks are used to enable efficient transfer of rankers without training new models from scratch.
 
+#### You can download our CLEF 2000-2003 query translations (Uyghur, Kyrgyz, Turkish) [here](https://madata.bib.uni-mannheim.de/401/).
+
 ## Installation
 Our code has been tested with Python 3.8, we recommend to set up a new conda environment:
 ```
@@ -16,6 +18,16 @@ cd composable-sft
 sed -i -e "s/python_requires='>=3.9'/python_requires='>=3.8'/" setup.py
 pip install -e .
 ```
+(Optional) If you want to run **NMT & BM25** (see below) on Uyghur, Kyrgyz or Turkish: 
+1. Install fairseq, which is required for using the NMT model provided by [Machine Translation for Turkic Languages](https://github.com/turkic-interlingua/til-mt):
+```
+git clone https://github.com/pytorch/fairseq
+cd fairseq
+pip install --editable ./
+pip install sentencepiece sacremoses
+```
+2. Run `ModularCLIR/scripts/download_lowres.sh` to download the NMT model.
+
 *Note: You may have to install a different torch/cuda environment depending on your infrastructure.*
 
 ## Training
@@ -45,7 +57,7 @@ INDEX_HOME=$RESOURCES_DIR/index
 scripts/index.sh $INDEX_HOME
 
 # Run and evaluate BM25, if necessary translate queries with EasyNMT.
-python src/bm25_eval.py --save_rankings --output_dir $RESOURCES_DIR --index_dir $INDEX_HOME --lang_pairs enen dede itit fifi ruru ende enfi enit enru defi deit deru fiit firu swen soen
+python src/bm25_eval.py --save_rankings --output_dir $RESOURCES_DIR --index_dir $INDEX_HOME --lang_pairs enen dede itit fifi ruru ende enfi enit enru defi deit deru fiit firu swen soen enfa enzh
 ```
 
 ### Baseline: MonoBERT
@@ -66,7 +78,7 @@ python src/monobert_eval.py --model_dir $MODEL_DIR --prerank_dir $PRERANKING_DIR
 You can evaluate Adapters (SFTMs) with `src/adapter_eval.py` (`src/sft_eval.py`), example arguments shown below. Both require: 
 - [Language Adapters](https://madata.bib.uni-mannheim.de/391/4/language_adapters.tar.gz), [Ranking Adapters](https://madata.bib.uni-mannheim.de/391/3/ranking_adapters.tar.gz) / [Language Masks](https://madata.bib.uni-mannheim.de/391/6/language_masks.tar.gz), [Ranking Masks](https://madata.bib.uni-mannheim.de/391/5/ranking_masks.tar.gz) 
 - [Pre-ranking files](https://madata.bib.uni-mannheim.de/391/1/preranking.tar.gz)
-- *(Optional)* `--mode lowres`: Swahili and Somali query translation files, run [NMT & BM25](https://github.com/rlitschk/ModularCLIR#installation) first.
+- *(Optional)* `--mode lowres`: Swahili and Somali query translation files, run [NMT & BM25](https://github.com/rlitschk/ModularCLIR/#baseline-nmt--bm25) first.
 
 Below we use the following notation for specifying language adapters (LA) and masks (LM) (`--lanuage_configs`).
 - `qlang`: LA<sup>Query</sup>, LM<sup>Query</sup>
@@ -93,11 +105,13 @@ GPU=0
 ## Cite
 If you use this repository, please consider citing our paper:
 ```bibtex
-@article{litschko2022modularclir,
-  author = {Litschko, Robert and Vuli{\'c}, Ivan, and Glava{\v{s}}, Goran},
-  title = {Parameter-Efficient Neural Reranking for Cross-Lingual and Multilingual Retrieval},
-  journal = {CoRR},
-  volume={abs/2204.02292},
-  year = {2022},
+@inproceedings{litschko2022modularclir,
+    title = "Parameter-Efficient Neural Reranking for Cross-Lingual and Multilingual Retrieval",
+    author = "Litschko, Robert  and
+      Vuli{\'c}, Ivan  and
+      Glava{\v{s}}, Goran",
+    booktitle = "Proceedings of COLING",
+    year = "2022",
+    pages = "1071--1082",
 }
 ```
