@@ -4,4 +4,4 @@ PROJECT_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd )"
 OUTPUT_DIR=/home/usr/resource/data/msmarco
 mkdir -p $OUTPUT_DIR
 
-pytohn $PROJECT_HOME/src/util/prepare_msmarco.py --output_dir $OUTPUT_DIR
+python $PROJECT_HOME/src/helper/prepare_msmarco.py --output_dir $OUTPUT_DIR
